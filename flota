@@ -1,0 +1,89 @@
+## El siguiente programa permite manejar un archivo CSV, llamado mi_flota con el siguiente encabezado:
+#  vehiculo,fecha,distancia,recaudado. 
+## Contiene un menu con el siguiente formato:
+## 1. Ingresar movil nuevo. Al ingresar un numero de movil no cargado anteriormente se creara este 
+# con fecha por defecto 01-01-1989 y los demas datos vacios. Los numeros de movil tienen el prefijo NU62 y
+## se pueden cargar hasta 100 moviles.
+## 2. Ingresar datos de un movil. Al ingresar por consola un movil que esta cargado se podran a este cargar datos de
+## fecha de viaje, distancia recorrida y recaudado. 
+## 3. Leer datos de un movil. Al ingresar por consola un movil que esta cargado se podra visualizar los datos de este.
+## Luego de mostrar los datos preguntara si quiere editar alguno de estos, permitiendo cambiar fecha, tiempo circulando 
+## y recaudado. 
+## 4. Borrar un movil. 
+## Se utilizara la palabra volver para regresar al menu y fin para finalizar el programa. Al leer los datos tener en cuenta 
+## los moviles con datos vacios. 
+
+import csv
+
+
+def ingresar_movil():
+    
+    numero = int(input('Ingresar numero de movil nuevo: '))
+    if (numero < 0 or numero > 99):
+        print('Numero de movil incorrecto')
+
+    else:
+        numero_movil = 'NU62' + str(numero)    
+        cabecera = ['movil', 'fecha', 'distancia', 'recaudado']
+        archivo = open('mi_flota.csv', 'a', newline='')
+        writer = csv.DictWriter(archivo, fieldnames=cabecera)
+        nuevo_movil = {'movil': numero_movil, 'fecha': '01-01-1989', 'distancia': '', 'recaudado': ''}
+        writer.writerow(nuevo_movil)
+
+        archivo.close()
+
+
+def ingresar_datos():
+    '''
+    Recordatorio: Para modificar un csv, el procedimiento es el siguiente
+        1. Leer todo el archivo y almacenar su resultado en una variable
+        2. Modificar la variable con la modificación que deseamos hacer sobre el archivo
+        3. Sobrescribir el archivo con nuestra variable modificada
+
+    IMPORTANTE: Al finalizar esta función, Reordenar los IDs del CSV.
+    '''
+    pass
+
+
+def mostrar_datos():
+    pass
+
+def borrar_movil():
+    pass
+
+
+if __name__ == '__main__':
+
+    menu = '''\n
+    Seleccione una opcion:
+    1. Ingresar nuevo movil
+    2. Ingresar datos de movil
+    3. Mostar y editar datos de movil
+    4. Borrar movil
+    La palabra FIN finaliza la ejecucion del programa. 
+    Opcion elegida: '''
+
+    while True:
+        opcion = input(menu)
+        print(f'\nElegiste la opción: {opcion}\n') 
+
+        if opcion == '1':
+        
+            ingresar_movil()
+
+        elif opcion == '2':
+            
+            print('¡Aún no implementado!')
+            
+        if opcion == '3':
+            
+            print('¡Aún no implementado!')
+
+        elif opcion == '4':
+
+            print('')
+
+        if opcion == 'FIN':
+            print('Ejecucion finalizada')
+            break
+        
