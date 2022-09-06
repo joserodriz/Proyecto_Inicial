@@ -14,6 +14,7 @@
 ## los moviles con datos vacios. 
 
 import csv
+from pickle import FALSE, TRUE
 
 
 def ingresar_movil():
@@ -23,14 +24,19 @@ def ingresar_movil():
         print('Numero de movil incorrecto')
 
     else:
-        numero_movil = 'NU62' + str(numero)    
-        cabecera = ['movil', 'fecha', 'distancia', 'recaudado']
-        archivo = open('mi_flota.csv', 'a', newline='')
-        writer = csv.DictWriter(archivo, fieldnames=cabecera)
-        nuevo_movil = {'movil': numero_movil, 'fecha': '01-01-1989', 'distancia': '', 'recaudado': ''}
-        writer.writerow(nuevo_movil)
+        numero_movil = 'NU62' + str(numero) 
+        repetido = compare(numero_movil)
 
-        archivo.close()
+        if repetido == FALSE:
+            cabecera = ['movil', 'fecha', 'distancia', 'recaudado']
+            archivo = open('mi_flota.csv', 'a', newline='')
+            writer = csv.DictWriter(archivo, fieldnames=cabecera)
+            nuevo_movil = {'movil': numero_movil, 'fecha': '01-01-1989', 'distancia': '', 'recaudado': ''}
+            writer.writerow(nuevo_movil)
+            archivo.close()
+        elif repetido == TRUE:
+            print('El Movil ingresado esta en la lista')
+            
 
 
 def ingresar_datos():
@@ -51,6 +57,20 @@ def mostrar_datos():
 def borrar_movil():
     pass
 
+def compare(numero):
+    archivo = open('mi_flota.csv')
+    lista = list(csv.DictReader(archivo))
+    archivo.close()
+
+    for i in lista:
+        movil = i.get('movil')
+        if movil == numero:
+            repet = TRUE
+            break
+        else:
+            repet = FALSE
+            
+    return repet
 
 if __name__ == '__main__':
 
@@ -68,8 +88,7 @@ if __name__ == '__main__':
         print(f'\nElegiste la opción: {opcion}\n') 
 
         if opcion == '1':
-        
-            ingresar_movil()
+             ingresar_movil()
 
         elif opcion == '2':
             
