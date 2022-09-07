@@ -6,12 +6,10 @@
 ## se pueden cargar hasta 100 moviles.
 ## 2. Ingresar datos de un movil. Al ingresar por consola un movil que esta cargado se podran a este cargar datos de
 ## fecha de viaje, distancia recorrida y recaudado. 
-## 3. Leer datos de un movil. Al ingresar por consola un movil que esta cargado se podra visualizar los datos de este.
-## Luego de mostrar los datos preguntara si quiere editar alguno de estos, permitiendo cambiar fecha, tiempo circulando 
-## y recaudado. 
-## 4. Borrar un movil. 
-## Se utilizara la palabra volver para regresar al menu y fin para finalizar el programa. Al leer los datos tener en cuenta 
-## los moviles con datos vacios. 
+## 3. Leer datos de un movil. Al ingresar por consola un movil que esta cargado se podra visualizar los datos de este. 
+## 4. Borrar un movil.
+# 5. Ingresar una fecha y calcular el monto recaudado por todos los moviles ese dia. 
+## Al leer los datos tener en cuenta los moviles con datos vacios. 
 
 import csv
 from pickle import FALSE, TRUE
@@ -26,6 +24,7 @@ def ingresar_movil():
     else:
         numero_movil = 'NU62' + str(numero) 
         repetido = compare(numero_movil)
+        ordena()
 
         if repetido == FALSE:
             cabecera = ['movil', 'fecha', 'distancia', 'recaudado']
@@ -69,21 +68,65 @@ def ingresar_datos():
         elif repetido == FALSE:
             print('El Movil ingresado no esta en la lista')
 
-    '''
-    Recordatorio: Para modificar un csv, el procedimiento es el siguiente
-        1. Leer todo el archivo y almacenar su resultado en una variable
-        2. Modificar la variable con la modificación que deseamos hacer sobre el archivo
-        3. Sobrescribir el archivo con nuestra variable modificada
-
-    IMPORTANTE: Al finalizar esta función, Reordenar los IDs del CSV.
-    '''
-    
-
-
 def mostrar_datos():
-    pass
+
+    numero = int(input('Ingresar numero de movil para mostrar datos: '))
+    if (numero < 0 or numero > 99):
+        print('Numero de movil incorrecto')
+
+    else:
+        numero_movil = 'NU62' + str(numero) 
+        repetido = compare(numero_movil)
+
+        if repetido == TRUE:
+            
+            archivo = open('mi_flota.csv')
+            lista = list(csv.DictReader(archivo))
+            archivo.close()
+
+            for i in lista:
+                try:
+                    if i['movil'] == numero_movil:
+                            print('movil ingresado: {}'.format(i['movil']))
+                            print('fecha de viaje: {}'.format(i['fecha']))
+                            print('distancia recorrida: {}'.format(i['distancia']))
+                            print('monto recaudado: {}'.format(i['recaudado']))
+                except:
+                    print('Datos Error!')
+
+        elif repetido == FALSE:
+            print('El Movil ingresado no esta en la lista')
 
 def borrar_movil():
+
+    numero = int(input('Ingresar numero de movil para cargar datos: '))
+    if (numero < 0 or numero > 99):
+        print('Numero de movil incorrecto')
+
+    else:
+        numero_movil = 'NU62' + str(numero) 
+        repetido = compare(numero_movil)
+
+        if repetido == TRUE:
+            
+            archivo = open('mi_flota.csv')
+            lista = list(csv.DictReader(archivo))
+            archivo.close()
+
+            for i in lista:
+                if i['movil'] != numero_movil:
+                    cabecera = ['movil', 'fecha', 'distancia', 'recaudado']
+                    archivo = open('mi_flota.csv', 'w', newline='')
+                    writer = csv.DictWriter(archivo, fieldnames=cabecera)
+                    writer.writeheader()
+                    writer.writerows(lista)
+                    archivo.close()
+                
+                else:
+                    print('movil {} eliminado'.format(numero_movil))
+
+        elif repetido == FALSE:
+            print('El Movil ingresado no esta en la lista')
     pass
 
 def compare(numero):
@@ -101,9 +144,12 @@ def compare(numero):
             
     return repet
 
+def ordena():
+    pass
+
 if __name__ == '__main__':
 
-    menu = '''\n
+    menu = '''
     Seleccione una opcion:
     1. Ingresar nuevo movil
     2. Ingresar datos de movil
@@ -114,8 +160,8 @@ if __name__ == '__main__':
 
     while True:
         opcion = input(menu)
-        if opcion >= '1' and opcion < '5':
-            print(f'\nElegiste la opción: {opcion}\n')
+        if opcion >= '1' and opcion <= '5':
+            print(f'Elegiste la opción: {opcion}\n')
 
         else:
             print('La opcion ingresada no es correcta')
@@ -129,11 +175,11 @@ if __name__ == '__main__':
             
         if opcion == '3':
             
-            print('¡Aún no implementado!')
+            mostrar_datos()
 
         elif opcion == '4':
 
-            print('')
+            borrar_movil()
 
         if opcion == 'FIN':
             print('Ejecucion finalizada')
