@@ -12,6 +12,7 @@
 ## Al leer los datos tener en cuenta los moviles con datos vacios. 
 
 import csv
+import operator
 from pickle import FALSE, TRUE
 
 
@@ -24,7 +25,6 @@ def ingresar_movil():
     else:
         numero_movil = 'NU62' + str(numero) 
         repetido = compare(numero_movil)
-        ordena()
 
         if repetido == FALSE:
             cabecera = ['movil', 'fecha', 'distancia', 'recaudado']
@@ -99,7 +99,7 @@ def mostrar_datos():
 
 def borrar_movil():
 
-    numero = int(input('Ingresar numero de movil para cargar datos: '))
+    numero = int(input('Ingresar numero de movil para borrar: '))
     if (numero < 0 or numero > 99):
         print('Numero de movil incorrecto')
 
@@ -114,20 +114,39 @@ def borrar_movil():
             archivo.close()
 
             for i in lista:
-                if i['movil'] != numero_movil:
+                if i['movil'] == numero_movil:
+                    lista.remove(i)
                     cabecera = ['movil', 'fecha', 'distancia', 'recaudado']
                     archivo = open('mi_flota.csv', 'w', newline='')
                     writer = csv.DictWriter(archivo, fieldnames=cabecera)
                     writer.writeheader()
                     writer.writerows(lista)
                     archivo.close()
-                
-                else:
                     print('movil {} eliminado'.format(numero_movil))
 
         elif repetido == FALSE:
             print('El Movil ingresado no esta en la lista')
+
+def total_recaudado():
+    
+    fecha = input('Ingresar fecha con formato dd-mm-aaaa: ')
+    total_recaudado = 0      
+    archivo = open('mi_flota.csv')
+    lista = list(csv.DictReader(archivo))
+    archivo.close()
+
+    for i in lista:
+        try:
+            if i['fecha'] == fecha:
+
+                total_recaudado += int(i['recaudado'])
+        except:
+            print('{} faltan datos'.format(i['movil']))
+
+    print('El monto recaudado en la fecha {} es {}'.format(fecha, total_recaudado))
+    
     pass
+
 
 def compare(numero):
     archivo = open('mi_flota.csv')
@@ -145,7 +164,20 @@ def compare(numero):
     return repet
 
 def ordena():
-    pass
+
+    archivo = open('mi_flota.csv')
+    lista = list(csv.DictReader(archivo))
+    archivo.close()
+
+    lista = sorted(lista, reverse=False, key=operator.itemgetter('movil'))
+
+    cabecera = ['movil', 'fecha', 'distancia', 'recaudado']
+    archivo = open('mi_flota.csv', 'w', newline='')
+    writer = csv.DictWriter(archivo, fieldnames=cabecera)
+    writer.writeheader()
+    writer.writerows(lista)
+    archivo.close()
+
 
 if __name__ == '__main__':
 
@@ -155,6 +187,7 @@ if __name__ == '__main__':
     2. Ingresar datos de movil
     3. Mostar y editar datos de movil
     4. Borrar movil
+    5. Total recaudado
     La palabra FIN finaliza la ejecucion del programa. 
     Opcion elegida: '''
 
@@ -168,6 +201,7 @@ if __name__ == '__main__':
 
         if opcion == '1':
              ingresar_movil()
+             ordena()
 
         elif opcion == '2':
             
@@ -180,6 +214,11 @@ if __name__ == '__main__':
         elif opcion == '4':
 
             borrar_movil()
+            ordena()
+
+        if opcion == '5':
+            
+            total_recaudado()
 
         if opcion == 'FIN':
             print('Ejecucion finalizada')
