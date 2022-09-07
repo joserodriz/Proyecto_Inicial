@@ -7,9 +7,8 @@ con fecha por defecto 01-01-1989 y los demas datos vacios. Los numeros de movil 
  se pueden cargar hasta 100 moviles.
  2. Ingresar datos de un movil. Al ingresar por consola un movil que esta cargado se podran a este cargar datos de
  fecha de viaje, distancia recorrida y recaudado. 
- 3. Leer datos de un movil. Al ingresar por consola un movil que esta cargado se podra visualizar los datos de este.
- Luego de mostrar los datos preguntara si quiere editar alguno de estos, permitiendo cambiar fecha, tiempo circulando 
- y recaudado. 
+ 3. Leer datos de un movil. Al ingresar por consola un movil que esta cargado se podra visualizar los datos de este. 
  4. Borrar un movil. 
+ 5. Ingresar una fecha y calcular el monto total recaudado por todos los moviles ese dia. 
  Se utilizara la palabra volver para regresar al menu y fin para finalizar el programa. Al leer los datos tener en cuenta 
  los moviles con datos vacios.
