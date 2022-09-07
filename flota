@@ -36,10 +36,39 @@ def ingresar_movil():
             archivo.close()
         elif repetido == TRUE:
             print('El Movil ingresado esta en la lista')
-            
 
 
 def ingresar_datos():
+
+    numero = int(input('Ingresar numero de movil para cargar datos: '))
+    if (numero < 0 or numero > 99):
+        print('Numero de movil incorrecto')
+
+    else:
+        numero_movil = 'NU62' + str(numero) 
+        repetido = compare(numero_movil)
+
+        if repetido == TRUE:
+            
+            archivo = open('mi_flota.csv')
+            lista = list(csv.DictReader(archivo))
+            archivo.close()
+
+            for i in lista:
+                if i['movil'] == numero_movil:
+                    i['fecha']  = input('Ingrese fecha de viaje con formato dd-mm-aaa: ')
+                    i['distancia'] = int(input('Ingrese distancia de recorrido: '))
+                    i['recaudado'] = int(input('Ingrese monto recaudado: '))
+                    cabecera = ['movil', 'fecha', 'distancia', 'recaudado']
+                    archivo = open('mi_flota.csv', 'w', newline='')
+                    writer = csv.DictWriter(archivo, fieldnames=cabecera)
+                    writer.writeheader()
+                    writer.writerows(lista)
+                    archivo.close()
+
+        elif repetido == FALSE:
+            print('El Movil ingresado no esta en la lista')
+
     '''
     Recordatorio: Para modificar un csv, el procedimiento es el siguiente
         1. Leer todo el archivo y almacenar su resultado en una variable
@@ -48,7 +77,7 @@ def ingresar_datos():
 
     IMPORTANTE: Al finalizar esta función, Reordenar los IDs del CSV.
     '''
-    pass
+    
 
 
 def mostrar_datos():
@@ -85,14 +114,18 @@ if __name__ == '__main__':
 
     while True:
         opcion = input(menu)
-        print(f'\nElegiste la opción: {opcion}\n') 
+        if opcion >= '1' and opcion < '5':
+            print(f'\nElegiste la opción: {opcion}\n')
+
+        else:
+            print('La opcion ingresada no es correcta')
 
         if opcion == '1':
              ingresar_movil()
 
         elif opcion == '2':
             
-            print('¡Aún no implementado!')
+            ingresar_datos()
             
         if opcion == '3':
             
